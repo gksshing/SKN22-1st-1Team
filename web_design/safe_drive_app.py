@@ -2,7 +2,12 @@ import streamlit as st
 import base64
 import os
 
-st.set_page_config(page_title="안전한 운전, 사고 없는 내일", layout="wide")
+# 페이지 설정: 사이드바 기본 숨김
+st.set_page_config(
+    page_title="안전한 운전, 사고 없는 내일",
+    layout="wide",
+    initial_sidebar_state="collapsed"   # 사이드바 접기
+)
 
 # 이미지 Base64 변환 함수
 def get_base64_of_bin_file(bin_file):
@@ -15,15 +20,17 @@ current_dir = os.path.dirname(__file__)
 img_path = os.path.join(current_dir, "safecar1.png")   # 배경 이미지 파일
 img_base64 = get_base64_of_bin_file(img_path)
 
-# CSS 정의
+# CSS 정의 (사이드바, 상단 메뉴 숨김 포함)
 st.markdown(
     f"""
     <style>
+    /* 배경 이미지 */
     .stApp {{
         background-image: url("data:image/png;base64,{img_base64}");
         background-size: cover;
         background-position: center;
     }}
+    /* 메인 박스 */
     .main-box {{
         background: rgba(255,255,255,0.85);
         padding: 40px;
@@ -31,6 +38,8 @@ st.markdown(
         max-width: 950px;
         margin:auto;
         margin-top: 40px;
+        margin-bottom: 60px;
+        text-align: center; /* 내부 콘텐츠 중앙 정렬 */
     }}
     .main-title {{
         font-size: 54px; 
@@ -51,13 +60,12 @@ st.markdown(
         color: #444; 
         margin-bottom: 40px;
     }}
-    .btn-container {{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    /* 버튼 스타일 */
+    div.stElementContainer.element-container.st-key-guide_btn {{
+        margin:auto; /* 버튼 자체 중앙 정렬 */
     }}
     div.stButton > button:first-child {{
-        background:#428AF7;
+        background:#7B3FE4; /* 보라색 버튼 */
         color:white;
         borde   r:none;
         border-radius:8px;
@@ -65,16 +73,19 @@ st.markdown(
         font-size:18px;
         font-weight:600;
         cursor:pointer;
+        
+        display:block;
     }}
-    div.stButton.secondary > button:first-child {{
-        background:white;
-        color:#333;
-        border:1px solid #ddd;
-        border-radius:8px;
-        padding:16px 28px;
-        font-size:18px;
-        font-weight:600;
-        cursor:pointer;
+    div.stButton {{
+        text-align: center; /* 버튼 컨테이너 중앙 정렬 */
+    }}
+    /* 사이드바 완전 숨김 */
+    section[data-testid="stSidebar"] {{
+        display: none;
+    }}
+    /* 상단 메뉴(Deploy 등) 숨김 */
+    header {{
+        visibility: hidden;
     }}
     </style>
     """,
@@ -82,31 +93,21 @@ st.markdown(
 )
 
 # 메인 박스 + 타이틀 + 문구 + 버튼
-st.markdown(
-    """
-    <div class="main-box">
-        <div class="main-title">안전한 운전,</div>
-        <div class="sub-title">사고 없는 내일</div>
-        <div class="desc">
-            전문적인 안전 운전 팁과 실시간 통계로<br>
-            당신의 안전한 여행을 지켜드립니다.
+with st.container():
+    st.markdown(
+        """
+        <div class="main-box">
+            <div class="main-title">안전한 운전,</div>
+            <div class="sub-title">사고 없는 내일</div>
+            <div class="desc">
+                안전 운전 팁과 교통사고 통계로<br>
+                당신의 안전한 운전을 지켜드립니다.
+            </div>
         </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        """,
+        unsafe_allow_html=True
+    )
 
-# 버튼 영역 (좌우 끝 정렬)
-col_spacer1, col_left, col_right, col_spacer2 = st.columns([3, 3, 2, 2])
-
-with col_left:
-    st.markdown('<div class="stButton">', unsafe_allow_html=True)
+    # 버튼을 메인 박스 안쪽 설명 바로 아래 중앙에 배치
     if st.button("안전 가이드 시작하기 →", key="guide_btn"):
-        st.switch_page("pages/driver_input.py")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with col_right:
-    st.markdown('<div class="stButton secondary">', unsafe_allow_html=True)
-    if st.button("통계 확인하기", key="stats_btn"):
-        st.switch_page("pages/stats.py")
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.switch_page("pages/guide_all.py")

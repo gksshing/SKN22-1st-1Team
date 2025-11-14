@@ -4,6 +4,23 @@ import os
 from sqlalchemy import create_engine
 import plotly.express as px
 
+# -----------------------------
+# 타이틀 및 설명 (CSS 적용)
+# -----------------------------
+style = """
+    <style>
+    /* 사이드바 숨김 */
+    section[data-testid="stSidebar"] {
+        display: none;
+    }
+    /* 상단 메뉴(Deploy 등) 숨김 */
+    header {
+        visibility: hidden;
+    }
+    </style>
+"""
+st.markdown(style, unsafe_allow_html=True)
+
 # --- 1. 모듈 Import 경로 설정 ---
 # 이 파일이 'pages/' 폴더 안에 있다고 가정하고,
 # 상위 폴더(프로젝트 루트)를 시스템 경로에 추가합니다.
@@ -130,3 +147,11 @@ if 'last_fig' in st.session_state:
     else:
         # 차트 생성 실패 시 (fig is None 또는 오류 발생)
         st.error(f"차트 생성 실패: {st.session_state['last_title']}")
+
+# -----------------------------
+# 하단 좌측: 이전페이지 버튼
+# -----------------------------
+bottom_cols = st.columns([1, 1, 1, 1, 1])
+with bottom_cols[0]:
+    if st.button("⬅️ 이전페이지"):
+        st.switch_page("pages/guide_all.py")   # 로컬 이전페이지로 이동

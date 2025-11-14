@@ -49,6 +49,14 @@ def make_keys(prefix, items):
 # -----------------------------
 style = """
     <style>
+    /* 사이드바 숨김 */
+    section[data-testid="stSidebar"] {
+        display: none;
+    }
+    /* 상단 메뉴(Deploy 등) 숨김 */
+    header {
+        visibility: hidden;
+    }
     .card {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
@@ -123,10 +131,10 @@ if progress >= 0.999:
 bottom_cols = st.columns([1, 1, 1, 1, 1])
 with bottom_cols[0]:
     if st.button("⬅️ 이전페이지"):
-        st.switch_page("pages/이전페이지.py")   # 로컬 pages 폴더 내 파일로 이동
+        st.switch_page("pages/guide_all.py")   # 로컬 pages 폴더 내 파일로 이동
 
 with bottom_cols[-1]:
     if st.button("🚨 긴급 연락처"):
-        st.switch_page("EC_details.py")   # 로컬 pages 폴더 내 파일로 이동
+        st.switch_page("pages/EC_details.py")   # 로컬 pages 폴더 내 파일로 이동
 
 st.caption("체크리스트는 안전 운전을 돕기 위한 일반 가이드입니다. 차량 상태 이상이 있으면 즉시 전문가 점검을 받으세요.")
