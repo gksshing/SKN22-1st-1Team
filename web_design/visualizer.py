@@ -168,7 +168,7 @@ class AccidentVisualizer:
 
     # --- Case 1: 수직 막대 차트 (범주형 vs 수치형) ---
     def _create_bar_chart(self, cat_var: str, num_var: str, cat_label: str, num_label: str):
-        title = f"'{cat_label}' 별 '{num_label}' (상위 20개)"
+        title = f"{cat_label} 별 {num_label}"
         agg_func = "COUNT" if '(사고건수)' in num_var else "SUM"
         
         sel, frm, jn, grp, _ = self._build_query_components(cat_var, num_var, agg_func)
@@ -180,14 +180,13 @@ class AccidentVisualizer:
         fig = px.bar(df, 
                      x=col1_name,
                      y='Value',
-                     title=title,
                      labels={col1_name: cat_label, 'Value': num_label}) # 한글 레이블 적용
         fig.update_xaxes(type='category') # X축을 범주형으로 강제
         return fig, title
 
     # --- Case 2: 라인 차트 (시간형 vs 수치형) ---
     def _create_line_chart(self, time_var: str, num_var: str, time_label: str, num_label: str):
-        title = f"'{time_label}' 별 '{num_label}' 추이"
+        title = f"{time_label} 별 '{num_label} 추이"
         agg_func = "COUNT" if '(사고건수)' in num_var else "SUM"
         
         sel, frm, jn, grp, odr = self._build_query_components(time_var, num_var, agg_func)
@@ -206,7 +205,6 @@ class AccidentVisualizer:
         fig = px.line(df, 
                       x=col1_name,
                       y='Value', 
-                      title=title,
                       labels={col1_name: time_label, 'Value': num_label}, # 한글 레이블 적용
                       markers=True)
         return fig, title
@@ -214,7 +212,7 @@ class AccidentVisualizer:
     # --- Case 3: 그룹형 막대 차트 (범주형 vs 범주형) ---
     def _create_grouped_bar_chart(self, var1: str, var2: str, num_var: str, 
                                   label1: str, label2: str, num_label: str):
-        title = f"'{label1}'와 '{label2}' 별 '{num_label}' (그룹형 막대 차트)"
+        title = f"{label1}와 {label2} 별 {num_label}"
         
         table1, col1 = var1.split('.') # X축
         table2, col2 = var2.split('.') # Color (범례)
@@ -241,13 +239,12 @@ class AccidentVisualizer:
                      y='Value',
                      color=col2,
                      barmode='group',
-                     title=title,
                      labels={col1: label1, col2: label2, 'Value': num_label}) # 한글 레이블 적용
         return fig, title
 
     # --- Case 4: 버블 차트 (수치형 vs 수치형) ---
     def _create_bubble_chart(self, var1: str, var2: str, label1: str, label2: str):
-        title = f"'{label1}'와 '{label2}' 조합별 '사고건수' (버블 차트)"
+        title = f"{label1}와 {label2} 조합별 사고건수"
         
         table1, col1 = var1.split('.') # X축
         table2, col2 = var2.split('.') # Y축
@@ -282,7 +279,7 @@ class AccidentVisualizer:
                              'BubbleSize': True
                          },
                          size_max=60,        # 최대 원 크기 (조정 가능)
-                         title=title,
+
                          labels={col1: label1, col2: label2, 'BubbleSize': '사고건수'}) # 한글 레이블 적용
         
         # X, Y축이 정수형이므로, 틱(tick) 간격을 1로 설정하여 깔끔하게 표시
@@ -294,7 +291,7 @@ class AccidentVisualizer:
     # --- Case 5: 다중 라인 차트 (시간형 vs 범주형) ---
     def _create_multi_line_chart(self, time_var: str, cat_var: str, num_var: str, 
                                  time_label: str, cat_label: str, num_label: str):
-        title = f"'{time_label}'에 따른 '{cat_label}'별 '{num_label}' 추이"
+        title = f"{time_label}에 따른 {cat_label}별 {num_label} 추이"
         
         table1, col1 = time_var.split('.') # X축
         table2, col2 = cat_var.split('.') # Color
@@ -330,7 +327,7 @@ class AccidentVisualizer:
                       x=col1_name,
                       y='Value',
                       color=col2,
-                      title=title,
+                      #title=title,
                       labels={col1: time_label, 'Value': num_label, col2: cat_label}, # 한글 레이블 적용
                       markers=True)
         return fig, title
