@@ -56,7 +56,7 @@ def init_visualizer():
         return None  # st.stop() 대신 None 반환
 
 # --- 3. 페이지 설정 및 UI ---
-st.set_page_config(page_title="교통사고 시각화 분석", layout="wide")
+st.set_page_config(page_title="교통사고 시각화", layout="wide")
 
 # ===== 메인페이지 이동 버튼 (타이틀 상단) =====
 if st.button("← 메인페이지로 이동", key="main_btn"):
@@ -64,7 +64,7 @@ if st.button("← 메인페이지로 이동", key="main_btn"):
     st.switch_page("Safe_drive_app.py") 
 
 # ===== 타이틀 =====
-st.title("교통사고 시각화 분석")
+st.title("교통사고 시각화")
 st.subheader("두 개의 변수를 선택해주세요")
 
 # Visualizer 객체 로드 시도
@@ -98,7 +98,7 @@ if korean_labels:
     st.markdown('</div>', unsafe_allow_html=True)
 
     # ===== 분석 버튼 =====
-    if st.button("시각화 자료 생성하기", key="analyze_btn", use_container_width=True):
+    if st.button("시각화 자료 생성", key="analyze_btn", use_container_width=True):
         if label1 == label2:
             st.warning("서로 다른 두 개의 변수를 선택하세요.")
         else:
